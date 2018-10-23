@@ -1,11 +1,41 @@
 ## HugeGraph 配置项
 
+### Gremlin Server 配置项
+
+config option                | default value                                               | descrition
+---------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------
+host                         | 127.0.0.1                                                   | The host or ip of Gremlin Server.
+port                         | 8182                                                        | The listening port of Gremlin Server.
+scriptEvaluationTimeout      | 30000                                                       | The timeout for gremlin script execution(millisecond).
+channelizer                  | org.apache.tinkerpop.gremlin.server.channel.HttpChannelizer | Indicates the protocol which the Gremlin Server provides service.
+graphs                       | hugegraph: conf/hugegraph.properties                        | The map of graphs with name and config file path.
+
+> 对应配置文件 gremlin-server.yaml
+
+### Rest Server & API 配置项
+
+config option                | default value                                    | descrition
+---------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------
+restserver.url               | http://127.0.0.1:8080                            | The url for listening of rest-api server.
+graphs                       | [hugegraph:conf/hugegraph.properties]            | The map of graphs' name and config file.
+gremlinserver.url            | http://127.0.0.1:8182                            | The url of gremlin server.
+batch.max_edges_per_batch    | 500                                              | The maximum number of edges submitted per batch.
+batch.max_vertices_per_batch | 500                                              | The maximum number of vertices submitted per batch.
+batch.max_write_ratio        | 50                                               | The maximum thread ratio for batch writing, only take effect if the batch.max_write_threads is 0.
+batch.max_write_threads      | 0                                                | The maximum threads for batch writing, if the value is 0, the actual value will be set to batch.max_write_ratio * total-rest-threads.
+exception.allow_trace        | false                                            | Whether to allow exception trace stack.
+auth.require_authentication  | false                                            | Whether to enable authentication.
+auth.admin_token             | 162f7848-0b6d-4faf-b557-3a0797869c55             | Token for administrator operations.
+auth.user_tokens             | [hugegraph:9fd95c9c-711b-415b-b85f-d4df46ba5c31] | The map of user tokens with name and password.
+
+> 对应配置文件 rest-server.properties
+
 ### 基本配置项
 
 config option               | default value                                    | descrition
---------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------
-backend                     | rocksdb                                          | The data store type, available values are [memory, rocksdb, cassandra, scylladb, mysql]
-serializer                  | binary                                           | The serializer for backend store, available values are [text, binary, cassandra, mysql]
+--------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------
+backend                     | rocksdb                                          | The data store type, available values are [memory, rocksdb, cassandra, scylladb, hbase, mysql]
+serializer                  | binary                                           | The serializer for backend store, available values are [text, binary, cassandra, hbase, mysql]
 store                       | hugegraph                                        | The database name like Cassandra Keyspace.
 store.graph                 | graph                                            | The graph table name, which store vertex, edge and property.
 store.schema                | schema                                           | The schema table name, which store meta data.
@@ -21,22 +51,6 @@ snowflake.datecenter_id     | 0                                                |
 snowflake.force_string      | false                                            | Whether to force the snowflake long id to be a string.
 snowflake.worker_id         | 0                                                | The worker id of snowflake id generator.
 rate_limit                  | 0                                                | The max rate(items/s) to add/update/delete vertices/edges.
-auth.admin_token            | 162f7848-0b6d-4faf-b557-3a0797869c55             | Token for administrator operations.
-auth.require_authentication | false                                            | Whether to enable authentication.
-auth.user_tokens            | [hugegraph:9fd95c9c-711b-415b-b85f-d4df46ba5c31] | The map of user tokens with name and password.
-
-### API 配置项
-
-config option                | default value                         | descrition
----------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------
-restserver.url               | http://127.0.0.1:8080                 | The url for listening of rest-api server.
-graphs                       | [hugegraph:conf/hugegraph.properties] | The map of graphs' name and config file.
-gremlinserver.url            | http://127.0.0.1:8182                 | The url of gremlin server.
-batch.max_edges_per_batch    | 500                                   | The maximum number of edges submitted per batch.
-batch.max_vertices_per_batch | 500                                   | The maximum number of vertices submitted per batch.
-batch.max_write_ratio        | 50                                    | The maximum thread ratio for batch writing, only take effect if the batch.max_write_threads is 0.
-batch.max_write_threads      | 0                                     | The maximum threads for batch writing, if the value is 0, the actual value will be set to batch.max_write_ratio * total-rest-threads.
-exception.allow_trace        | false                                 | Whether to allow exception trace stack.
 
 ### Cassandra & ScyllaDB 后端配置项
 
